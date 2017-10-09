@@ -11,4 +11,3 @@ F:\VS代码\类库\GetHttpIp\GetHttpIp\bin\Debug\Ivony.Html.Parser.Regulars.dll
 F:\VS代码\类库\GetHttpIp\GetHttpIp\bin\Debug\Ivony.Core.xml
 F:\VS代码\类库\GetHttpIp\GetHttpIp\bin\Debug\Ivony.Html.xml
 F:\VS代码\类库\GetHttpIp\GetHttpIp\bin\Debug\Ivony.Html.Parser.xml
-F:\VS代码\类库\GetHttpIp\GetHttpIp\obj\Debug\Kylin.GetHttpIp.csprojResolveAssemblyReference.cache

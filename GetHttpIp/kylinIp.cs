@@ -34,8 +34,10 @@ namespace Kylin.GetHttpIp
         }
         
 
-        public string GetIPBy_xdaili()
+        public string GetIPBy_All()
         {
+            int foreach_i = 0;
+            ///讯代理
             string Url = "http://www.xdaili.cn/ipagent//freeip/getFreeIps?page=1&rows=10";
             try {
                 string Area_Html = http.GetHtmlText(Url);
@@ -68,12 +70,12 @@ namespace Kylin.GetHttpIp
                         }
                         catch { }
 
-
                     }
                 }
             }
             catch { }
 
+            ///西刺免费代理IP
             Url = "http://www.xicidaili.com/nn/";
             try
             {
@@ -83,8 +85,14 @@ namespace Kylin.GetHttpIp
                 var lists = documenthtml.FindFirst("#ip_list").Find("tr").ToList();
 
                 bool first_ip = true;
+                foreach_i = 0;
                 foreach (var list in lists)
                 {
+                    foreach_i++;
+                    if (foreach_i > 5)
+                    {
+                        break;
+                    }
                     if (first_ip)
                     {
                         first_ip = false;
@@ -118,6 +126,163 @@ namespace Kylin.GetHttpIp
             }
             catch { }
 
+            ///全网代理IP
+            Url = "http://www.goubanjia.com/free/anoy/%E9%AB%98%E5%8C%BF/index.shtml";
+            try
+            {
+                string Area_Html = http.GetHtmlText(Url);
+                var documenthtml = new JumonyParser().Parse(Area_Html);
+
+                var lists = documenthtml.FindFirst("#list").Find("tr").ToList();
+
+                bool first_ip = true;
+                foreach_i = 0;
+                foreach (var list in lists)
+                {
+                    foreach_i++;
+                    if (foreach_i > 5)
+                    {
+                        break;
+                    }
+                    if (first_ip)
+                    {
+                        first_ip = false;
+                        continue;
+                    }
+                    var IP_all = list.FindFirst(".ip");
+                    var ip_text = IP_all.Find("p");
+                    ip_text.Remove();
+                    string IP = IP_all.InnerText().Split(':')[0];
+                    string Duankou = IP_all.InnerText().Split(':')[1];
+                    try
+                    {
+                        WebProxy proxyObject = new WebProxy(IP, int.Parse(Duankou));//str为IP地址 port为端口号 代理类
+                        HttpWebRequest Req = (HttpWebRequest)WebRequest.Create("http://www.whatismyip.com.tw/"); // 61.183.192.5
+                        Req.UserAgent = "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; QQWubi 133; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; CIBA; InfoPath.2)";
+                        Req.Proxy = proxyObject; //设置代理 
+                        Req.Method = "GET";
+                        HttpWebResponse Resp = (HttpWebResponse)Req.GetResponse();
+                        string StringSub = "";
+                        string OkStr = "";
+                        Encoding code = Encoding.GetEncoding("utf-8");
+                        using (StreamReader sr = new StreamReader(Resp.GetResponseStream(), code))
+                        {
+                            string str1 = sr.ReadToEnd();//获取得到的网址html返回数据，这里就可以使用某些解析html的dll直接使用了,比如htmlpaser 
+                            if (str1.IndexOf(IP) > 0)
+                            {
+                                return IP + ":" + Duankou;
+                            }
+                        }
+                    }
+                    catch { }
+                }
+            }
+            catch { }
+
+
+            ///无忧代理IP
+            Url = "http://www.data5u.com/free/anoy/%E9%AB%98%E5%8C%BF/index.html";
+            try
+            {
+                string Area_Html = http.GetHtmlText(Url);
+                var documenthtml = new JumonyParser().Parse(Area_Html);
+
+                var lists = documenthtml.FindLast(".wlist").Find("ul li ul").ToList();
+
+                bool first_ip = true;
+                foreach_i = 0;
+                foreach (var list in lists)
+                {
+                    foreach_i++;
+                    if (foreach_i > 5)
+                    {
+                        break;
+                    }
+                    if (first_ip)
+                    {
+                        first_ip = false;
+                        continue;
+                    }
+
+                    string IP = list.FindFirst("li").InnerText().ToString();
+                    string Duankou = list.FindFirst(".port").InnerText().ToString(); ;
+                    try
+                    {
+                        WebProxy proxyObject = new WebProxy(IP, int.Parse(Duankou));//str为IP地址 port为端口号 代理类
+                        HttpWebRequest Req = (HttpWebRequest)WebRequest.Create("http://www.whatismyip.com.tw/"); // 61.183.192.5
+                        Req.UserAgent = "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; QQWubi 133; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; CIBA; InfoPath.2)";
+                        Req.Proxy = proxyObject; //设置代理 
+                        Req.Method = "GET";
+                        HttpWebResponse Resp = (HttpWebResponse)Req.GetResponse();
+                        string StringSub = "";
+                        string OkStr = "";
+                        Encoding code = Encoding.GetEncoding("utf-8");
+                        using (StreamReader sr = new StreamReader(Resp.GetResponseStream(), code))
+                        {
+                            string str1 = sr.ReadToEnd();//获取得到的网址html返回数据，这里就可以使用某些解析html的dll直接使用了,比如htmlpaser 
+                            if (str1.IndexOf(IP) > 0)
+                            {
+                                return IP + ":" + Duankou;
+                            }
+                        }
+                    }
+                    catch { }
+                }
+            }
+            catch { }
+
+            ///风云代理IP
+            Url = "http://www.fengyunip.com/free/china-high.html";
+            try
+            {
+                string Area_Html = http.GetHtmlText(Url);
+                var documenthtml = new JumonyParser().Parse(Area_Html);
+
+                var lists = documenthtml.FindFirst(".segment").Find("tr").ToList();
+
+                //bool first_ip = true;
+                foreach_i = 0;
+                foreach (var list in lists)
+                {
+                    var list_td = list.Find("td").ToList();
+                    if (list_td[2].ToString().Contains("匿名"))
+                    {
+                        continue;
+                    }
+                    foreach_i++;
+                    if (foreach_i > 5)
+                    {
+                        break;
+                    }
+                    var IP_all = list.FindFirst(".ip");
+                    var ip_text = IP_all.Find("p");
+                    ip_text.Remove();
+                    string IP = IP_all.InnerText().ToString();
+                    string Duankou = list.FindFirst(".port").InnerText().ToString();
+                    try
+                    {
+                        WebProxy proxyObject = new WebProxy(IP, int.Parse(Duankou));//str为IP地址 port为端口号 代理类
+                        HttpWebRequest Req = (HttpWebRequest)WebRequest.Create("http://www.whatismyip.com.tw/"); // 61.183.192.5
+                        Req.UserAgent = "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; QQWubi 133; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; CIBA; InfoPath.2)";
+                        Req.Proxy = proxyObject; //设置代理 
+                        Req.Method = "GET";
+                        HttpWebResponse Resp = (HttpWebResponse)Req.GetResponse();
+                        string StringSub = "";
+                        string OkStr = "";
+                        Encoding code = Encoding.GetEncoding("utf-8");
+                        using (StreamReader sr = new StreamReader(Resp.GetResponseStream(), code))
+                        {
+                            string str1 = sr.ReadToEnd();//获取得到的网址html返回数据，这里就可以使用某些解析html的dll直接使用了,比如htmlpaser 
+                            if (str1.IndexOf(IP) > 0)
+                            {
+                                return IP + ":" + Duankou;
+                            }
+                        }
+                    }
+                    catch { }
+                }
+            }
+            catch { }
             
             return "当前暂无可用";
         }
