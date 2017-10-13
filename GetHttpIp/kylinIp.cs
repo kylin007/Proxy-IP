@@ -26,7 +26,6 @@ namespace Kylin.GetHttpIp
         ///其他几个都要进页面
         ///
         HttpUtility http;
-         
 
         public kylinIp()
         {
